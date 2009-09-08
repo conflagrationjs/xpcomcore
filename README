@@ -1,0 +1,31 @@
+XPCOMCore
+=========
+
+A standard library like Ruby's, only for JavaScript (with XPCOM access).
+
+Installation
+============
+
+Check out / submodule in / whatever the code to a place of your choosing. Then load it from an XPCOM component like so:
+
+    COMPONENTS = [];
+    var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
+    // We use the /app resource here because of yet another weird firefox issue where the /xultestrunner resource
+    // isn't working as the XPCOM component gets registered.
+    loader.loadSubScript("resource://app/chrome/content/vendor/xpcomcore/bootstrap.js");
+    loader.loadSubScript("resource://xpcomcore/loader.js");
+
+Make sure that if you're registering your own component, you add it to the COMPONENTS array and build NSGetModule that way, kind of like so:
+
+    COMPONENTS.push(MYXPCOMComponent);  
+    NSGetModule = function(compMgr, fileSpec) {
+      return XPCOMUtils.generateModule(COMPONENTS);
+    };
+    
+Then, whenever you want to make use of XPCOMCore (say, from a XUL window), load the resource in like so:
+
+    <script type="text/javascript" src="resource://xpcomcore/loader.js" />
+    
+Then you'll have access to methods such as load() and require() and whatever else is defined in Kernel.
+
+- Gabriel Gironda
