@@ -21,20 +21,26 @@
     var resProt = ioService.getProtocolHandler("resource").QueryInterface(Components.interfaces.nsIResProtocolHandler);
     // FIXME IN GENERAL - refactor all this shit code
     
-    var ourResourceURIString = function() {
+    var ourFileURIString = function() {
       // FIXME - Great. All this is a dance around the fact line #289 of mozJSSubScriptLoader.cpp in mozilla 1.9.1
       // thinks that the best way to delimit script files is with a fucking ASCII arrow YOU FUCKS
-      var thisResource = (new Error).stack.split("\n")[2].split("@")[1].split(" -> ").slice(-1)[0].split(/:[0-9]/)[0];
-      return thisResource;
+      var thisFile = (new Error).stack.split("\n")[2].split("@")[1].split(" -> ").slice(-1)[0].split(/:[0-9]/)[0];
+      return thisFile;
     };
     
-    var ourResourceURI = function() {
-      return ioService.newURI(ourResourceURIString(), null, null).QueryInterface(Components.interfaces.nsIURL);
+    var ourFileURI = function() {
+      return ioService.newURI(ourFileURIString(), null, null).QueryInterface(Components.interfaces.nsIURL);
     };
     
     // FIXME - hilariously non-cross-platform
     var ourLibDir = function() {
-      var thisDir = ioService.newURI(resProt.resolveURI(ourResourceURI()), null, null).QueryInterface(Components.interfaces.nsIURL).directory;
+      var fileURI = ourFileURI();
+      if (fileURI.scheme == "resource") {
+        var thisDir = ioService.newURI(resProt.resolveURI(fileURI), null, null).QueryInterface(Components.interfaces.nsIURL).directory;
+      } else {
+        // Assumes we're a file:// URI
+        var thisDir = fileURI.directory;
+      }
       return thisDir + "lib/";
     };
 
