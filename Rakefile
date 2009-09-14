@@ -26,9 +26,16 @@ namespace :docs do
   task :commit do
     system(%Q[cd "#{here}" && git add "doc" && git commit -m "Updating docs"])    
   end
+  
+  task :update_gh_pages do
+    current_branch = `cd "#{here}" && git branch 2> /dev/null | grep -e '\\* ' | sed 's/^..\\(.*\\)/\\1/'`.chomp
+    system(%Q[cd "#{here}" && git checkout gh-pages && git merge master --no-commit && git reset HEAD . && git add "doc" && git commit -m "Updating docs for GH pages" && git checkout -f #{current_branch}])
+  end
+
 end
 
-task :build => ['version:update_files', 'docs:clean', 'docs:build', 'docs:commit']
+task :build => ['version:update_files', 'docs:clean', 'docs:build', 'docs:commit', 'docs:update_gh_pages']
+
 
 task :release => :build do
   system(%Q[cd #{here} && git push])
