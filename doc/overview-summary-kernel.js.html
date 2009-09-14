@@ -168,8 +168,23 @@ function asd() {
 <span class="reserved">function</span> Kernel(mixinScope) {
   var myPrototype = arguments.callee.<span class="reserved">prototype</span>;
   <span class="reserved">if</span> (mixinScope) {
+    <span class="comment">// FIXME - figure out a better way than this object jammed in here to special case our</span>
+    <span class="comment">// methods we really want to be calling getters when they're mixed in.</span>
+    var callingGetters = {<span class="literal">'CURRENT_FILE'</span>: {defaultArgs: [2]}};
     var makeGetter = <span class="reserved">function</span>(attr) { <span class="reserved">return</span> <span class="reserved">function</span>() { <span class="reserved">return</span> myPrototype[attr]; } };
-    <span class="reserved">for</span> (var p in myPrototype) { mixinScope.__defineGetter__(p, makeGetter(p)); };
+    var makeCallingGetter = <span class="reserved">function</span>(attr, argsArray) { 
+      <span class="reserved">return</span> <span class="reserved">function</span>() { 
+        <span class="reserved">return</span> myPrototype[attr].apply(<span class="reserved">this</span>, argsArray); 
+      }
+    };
+    
+    <span class="reserved">for</span> (var p in myPrototype) { 
+      <span class="reserved">if</span> (callingGetters[p]) {
+        mixinScope.__defineGetter__(p, makeCallingGetter(p, callingGetters[p].defaultArgs || []));
+      } <span class="reserved">else</span> {
+        mixinScope.__defineGetter__(p, makeGetter(p)); 
+      }
+    };
   };
   <span class="reserved">return</span> myPrototype;
 };
@@ -222,21 +237,28 @@ Kernel.<span class="reserved">prototype</span> = {
    * <span class="attrib">@throws</span> {<span class="attrib">@link</span> SelfConceptError} Thrown when we can't figure out what the filesystem
    * path to the current file is.
    */</span>
-  CURRENT_FILE: <span class="reserved">function</span>() {
-    var ioService = Cc[<span class="literal">"@mozilla.org/network/io-service;1"</span>].getService(Ci.nsIIOService);
-    <span class="comment">// FIXME - UGH. This is so seedy.</span>
-    var thisFile = (new Error).stack.split(<span class="literal">"\n"</span>)[2].split(<span class="literal">"@"</span>)[1].split(<span class="literal">" -&gt; "</span>).slice(-1)[0].split(/:[0-9]/)[0];
-    var thisFileURI = ioService.newURI(thisFile, null, null);
-    
-    <span class="comment">// If we're loaded as a resource, resolve ourselves to an actual filesystem path and return that.</span>
-    <span class="reserved">if</span> (thisFileURI.scheme == <span class="literal">"resource"</span>) {
-      var resProt = ioService.getProtocolHandler(<span class="literal">"resource"</span>).QueryInterface(Components.interfaces.nsIResProtocolHandler);
-      <span class="reserved">return</span> ioService.newURI(resProt.resolveURI(thisFileURI), null, null).QueryInterface(Ci.nsIURL).path;
-    <span class="comment">// If we're loaded as a file, just return our path.</span>
-    } <span class="reserved">else</span> <span class="reserved">if</span> (thisFileURI.scheme == <span class="literal">"file"</span>) {
-      <span class="reserved">return</span> thisFileURI.QueryInterface(Ci.nsIURL).path;
-    } <span class="reserved">else</span> {
-      throw(new SelfConceptError(<span class="literal">"The filesystem location of the current file could not be determined."</span>));
+  CURRENT_FILE: <span class="reserved">function</span>(stackTraversalDepth) {
+    try {
+      var stackTraversalDepth = stackTraversalDepth || 1;
+      var ioService = Cc[<span class="literal">"@mozilla.org/network/io-service;1"</span>].getService(Ci.nsIIOService);
+      <span class="comment">// FIXME - UGH. This is so seedy.</span>
+      <span class="comment">// Traverse up the stack as far as needed to get our caller's stack frame. Sometimes we need to</span>
+      <span class="comment">// traverse more than one level up, like when this function is actually called from a getter</span>
+      <span class="comment">// property that references it.</span>
+      var callerStack = Components.stack;
+      <span class="reserved">for</span> (var i = 0; i &lt; stackTraversalDepth; i++) {
+        callerStack = callerStack.caller;
+      }
+      <span class="comment">// Split based on the stupid fucking " -&gt; " Gecko puts in the filename and get the last entry</span>
+      var ostensiblyUs = callerStack.filename.split(<span class="literal">" -&gt; "</span>).slice(-1);
+      var callerFileURI = ioService.newURI(ostensiblyUs, null, null);
+      <span class="comment">// QI for an nsIFileURL which lets us get a handle on an actual file attribute and automagically does</span>
+      <span class="comment">// resource: URL resolution for us</span>
+      callerFileURI.QueryInterface(Ci.nsIFileURL);
+      <span class="comment">// And theoretically, we can now get a handle on an nsIFile and return the path of that.</span>
+      <span class="reserved">return</span> callerFileURI.file.path;
+    } catch(e) {
+      throw(new SelfConceptError(<span class="literal">"The filesystem location of the current file could not be determined. -- "</span> + e));
     }
   },
 
@@ -366,6 +388,6 @@ Kernel.<span class="reserved">prototype</span> = {
 <font size="-1">
 
 </font>
-<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Mon Sep 14 12:39:13 2009</div>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Mon Sep 14 14:11:58 2009</div>
 </body>
 </html>
