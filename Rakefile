@@ -24,7 +24,7 @@ namespace :docs do
   end
   
   task :commit do
-    system(%Q[cd #{here} && git add "doc" && git commit -m "Updating docs"])    
+    system(%Q[cd "#{here}" && git add "doc" && git commit -m "Updating docs"])    
   end
 end
 
@@ -35,12 +35,25 @@ task :release => :build do
 end
 
 namespace :version do
-  task :update_files do
+  version_file = here + "VERSION.yml"
   
+  task :update_files do
+    component_file = (Pathname(__FILE__).parent + "components/XPCOMCore.js").expand_path
+    current = YAML.load_file(version_file.to_s)
+    version_string = "#{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
+    js_marker_comment = "// DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @XPCOMCORE_VERSION@"
+    js_version_string = "var XPCOMCoreVersion = '#{version_string}'; #{js_marker_comment}\n"
+    new_file = component_file.readlines.collect do |line|
+      next line unless line =~ /@XPCOMCORE_VERSION@/
+      js_version_string
+    end
+    
+    component_file.open('w') { |f| f << new_file.join }
+    puts "Updated '#{component_file}' to reflect VERSION.yml"
+    system(%Q[cd "#{here}" && git add "#{component_file}" && git commit -m "Updating version to '#{version_string}'" "#{component_file}"])
   end
   
   namespace :bump do
-    version_file = here + "VERSION.yml"
     bumper = lambda do |version_part|
       current = YAML.load_file(version_file.to_s)
       puts "Current version is: #{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
