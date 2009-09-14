@@ -1,5 +1,5 @@
 const requiredMinGeckoVersion = '1.9.0';
-var EXPORTED_SYMBOLS = ["XPCOMCore"];
+var EXPORTED_SYMBOLS = ["XPCOMCore", "XPCOMCoreConfig"];
 
 const Cc = Components.classes;
 const Ci = Components.interfaces;
@@ -29,3 +29,4 @@ Components.manager.QueryInterface(Ci.nsIComponentRegistrar).autoRegister(compone
 // since "Javascript global property"/"Javascript global constructor" don't get exported into the
 // BackstagePass environment.
 const XPCOMCore = Cc["@conflagrationjs.org/xpcomcore/core-constructor;1"].createInstance();
+const XPCOMCoreConfig = Cc["@conflagrationjs.org/xpcomcore/core;1"].createInstance();

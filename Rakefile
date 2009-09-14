@@ -1,4 +1,5 @@
 require 'pathname'
+require 'yaml'
 here = (Pathname(__FILE__).parent)
 
 task :test do
@@ -27,6 +28,34 @@ namespace :docs do
   end
 end
 
-task :release => ['docs:clean', 'docs:build', 'docs:commit'] do
+task :build => ['version:update_files', 'docs:clean', 'docs:build', 'docs:commit']
+
+task :release => :build do
   system(%Q[cd #{here} && git push])
+end
+
+namespace :version do
+  task :update_files do
+  
+  end
+  
+  namespace :bump do
+    version_file = here + "VERSION.yml"
+    bumper = lambda do |version_part|
+      current = YAML.load_file(version_file.to_s)
+      puts "Current version is: #{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
+      current['version'][version_part] += 1
+      version_file.open('w') { |f| f << YAML.dump(current) }
+      puts "Current version is now: #{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
+    end
+    
+    desc "Bumps the major version"
+    task(:major) { bumper.call('major') }
+    
+    desc "Bumps the minor version"
+    task(:minor) { bumper.call('minor') }
+    
+    desc "Bumps the patch version"
+    task(:patch) { bumper.call('patch') }
+  end
 end

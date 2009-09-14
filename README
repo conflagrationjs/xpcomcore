@@ -8,23 +8,19 @@ Installation
 
 Check out / submodule in / whatever the code to a place of your choosing. Then load it from an XPCOM component like so:
 
-    COMPONENTS = [];
-    var loader = Components.classes["@mozilla.org/moz/jssubscript-loader;1"].getService(Components.interfaces.mozIJSSubScriptLoader);
-    // We use the /app resource here because of yet another weird firefox issue where the /xultestrunner resource
-    // isn't working as the XPCOM component gets registered.
-    loader.loadSubScript("resource://app/chrome/content/vendor/xpcomcore/bootstrap.js");
-    loader.loadSubScript("resource://xpcomcore/loader.js");
+    Components.utils.import("resource://app/chrome/content/vendor/xpcomcore/bootstrapper.js");
 
-Make sure that if you're registering your own component, you add it to the COMPONENTS array and build NSGetModule that way, kind of like so:
-
-    COMPONENTS.push(MYXPCOMComponent);  
-    NSGetModule = function(compMgr, fileSpec) {
-      return XPCOMUtils.generateModule(COMPONENTS);
-    };
+Then, to pull XPCOMCore into your scope, do this lovely little trick:
     
-Then, whenever you want to make use of XPCOMCore (say, from a XUL window), load the resource in like so:
+    XPCOMCore({scope: this});
+    
+If you wish to not automatically mix in the `Kernel` module, pass another argument like so:
 
-    <script type="text/javascript" src="resource://xpcomcore/loader.js" />
+    XPCOMCore({scope: this, importKernel: false});
+    
+Then, whenever you want to make use of XPCOMCore (say, from a XUL window), do the same deal. For example:
+
+    <script type="text/javascript">XPCOMCore({scope: this});</script>
     
 Then you'll have access to methods such as load() and require() and whatever else is defined in Kernel.
 

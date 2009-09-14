@@ -4,6 +4,9 @@ Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 const Cc = Components.classes;
 const Ci = Components.interfaces;
 
+var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
+var libRoot = ioService.newURI("resource://xpcomcore/lib", null, null).QueryInterface(Ci.nsIFileURL).file.path;
+
 // NOTE - XPCOMCore is a singleton
 var XPCOMCore = function() { 
   if (arguments.callee.__singletonInstance__) { return arguments.callee.__singletonInstance__; };
@@ -22,7 +25,10 @@ var XPCOMCore = function() {
       return false;
     } else {
       loadKernel(importScope);
-      importScope.__defineGetter__('__XPCOMCoreLoaded__', function() { return true; });
+      // FIXME - defineGetter explodes when it's a 'Window' object for some reason. Fine for
+      // ChromeWindow and fine for BackstagePass though. Weird.
+      // importScope.__defineGetter__('__XPCOMCoreLoaded__', function() { return true; });
+      importScope.__XPCOMCoreLoaded__ = true;
       // Automatically mix Kernel into the scope if importKernel is true
       if (importKernel) { importScope.Kernel(importScope); };
       return true;
@@ -54,6 +60,7 @@ XPCOMCore.prototype = {
   contractID: "@conflagrationjs.org/xpcomcore/core;1",
   classID: Components.ID("{f562f600-9c25-11de-8a39-0800200c9a66}"),
   QueryInterface: XPCOMUtils.generateQI(XPCOMCoreInterfaces),
+  _xpcom_categories: [{category: "JavaScript global property", entry: "XPCOMCoreConfig"}],
   
   // implemented for nsIClassInfo
   getInterfaces: function(aCountRef) {
@@ -80,7 +87,6 @@ var XPCOMCoreConstructorInterfaces = [Ci.nsIClassInfo, Components.interfaces.nsI
 // Singleton
 var XPCOMCoreConstructor = function() {
   if (arguments.callee.__singletonInstance__) { return arguments.callee.__singletonInstance__; };
-dump("instantiating\n")
   var ctor = Components.Constructor("@conflagrationjs.org/xpcomcore/core;1", Components.interfaces.nsIWritableVariant, "setFromVariant");
   arguments.callee.__singletonInstance__ = ctor;
   return ctor;
