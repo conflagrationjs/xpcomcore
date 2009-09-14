@@ -78,102 +78,199 @@ function asd() {
 <h4>Summary</h4>
 <p>
 	
-		No overview generated for 'kernel.js'<BR/><BR/>
+		This file specifies a set of globally useful features/shortcuts
+ and defines our "Kernel" object, which is the base for doing a lot of simple
+ things with XPCOMCore such as loading in other files and printing to the
+ console.<BR/><BR/>
 	
 </p>
 
 <hr>
 
 
+    <table border="1" cellpadding="3" cellspacing="0" width="100%">
+    <tr bgcolor="#CCCCFF" class="TableHeadingColor">
+    <td colspan=2><font size="+2">
+    
+        <b>Class Summary</b>
+    
+    </font></td>
+    </tr>
+    
+    <tr bgcolor="white" class="TableRowColor">
+    <td width="15%"><b><a href="Kernel.html">Kernel</a></b></td>
+    <td>Our central 'class' containing a lot of properties and methods we need to
+ build the rest of XPCOMCore on top of.</td>
+    </tr>
+    
+    <tr bgcolor="white" class="TableRowColor">
+    <td width="15%"><b><a href="LoadError.html">LoadError</a></b></td>
+    <td>Exception representing an error loading a file.</td>
+    </tr>
+    
+    <tr bgcolor="white" class="TableRowColor">
+    <td width="15%"><b><a href="SelfConceptError.html">SelfConceptError</a></b></td>
+    <td>Exception representing an error determining what the path to the currently executing file is.</td>
+    </tr>
+    
+    </table>
+    <hr/> 
+
 
 <!-- ========== METHOD SUMMARY =========== -->
-
-	<a name="method_summary"><!-- --></a>
-	<table border="1" cellpadding="3" cellspacing="0" width="100%">
-		<tr bgcolor="#CCCCFF" class="TableHeadingColor">
-			<td colspan=2>
-				<font size="+2">
-					<b>Method Summary</b>
-				</font>
-			</td>
-		</tr>
-	
-		
-		   <tr bgcolor="white" class="TableRowColor">
-		      <td align="right" valign="top" width="1%">
-			 <font size="-1">
-			    <code>static&nbsp;Object</code>
-			 </font>
-		      </td>
-		      <td>
-			 <code>
-			    <b>
-			       <a href="GLOBALS.html#!s!LoadError">LoadError</a></b>(message)
-			 </code>
-			 <br>
-			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			 
-		      </td>
-		   </tr>
-		
-	
-	</table>
-    <p>
 
 <!-- ========== END METHOD SUMMARY =========== -->
 
 
-        <pre class="sourceview"><span class="comment">// Convenience shortcuts</span>
-const Cc = Components.classes;
-const Ci = Components.interfaces;
-const Cr = Components.results;
-const Cu = Components.utils;
+        <pre class="sourceview"><span class="comment">/** 
+ * <span class="attrib">@fileoverview</span> This file specifies a set of globally useful features/shortcuts
+ * and defines our "Kernel" object, which is the base for doing a lot of simple
+ * things with XPCOMCore such as loading in other files and printing to the
+ * console.
+ */</span>
 
-<span class="comment">// Exceptions</span>
+<span class="comment">/** 
+ * <span class="attrib">@class</span> Exception representing an error loading a file.
+ * <span class="attrib">@extends</span> Error
+ * <span class="attrib">@constructor</span>
+ * <span class="attrib">@param</span> {String} message The error message to be given for this exception.
+ * <span class="attrib">@type</span> Error
+ */</span>
 <span class="reserved">function</span> LoadError(message) {
   var err = new Error(message);
   err.name = arguments.callee.name;
   <span class="reserved">return</span> err;
 };
 
+<span class="comment">/** 
+ * <span class="attrib">@class</span> Exception representing an error determining what the path to the currently executing file is.
+ * <span class="attrib">@extends</span> Error
+ * <span class="attrib">@constructor</span>
+ * <span class="attrib">@param</span> {String} message The error message to be given for this exception.
+ * <span class="attrib">@type</span> Error
+ */</span>
+<span class="reserved">function</span> SelfConceptError(message) {
+  var err = new Error(message);
+  err.name = arguments.callee.name;
+  <span class="reserved">return</span> err;
+};
 
+<span class="comment">/**
+ * A pseudo-constructor to make JSDoc happy and actually document things in {<span class="attrib">@link</span> Kernel}.
+ * If this method is called with an argument, all properties from {<span class="attrib">@link</span> Kernel} are taken
+ * and defined as the return value of getter methods set on the given object.
+ * <span class="attrib">@class</span> Our central 'class' containing a lot of properties and methods we need to
+ * build the rest of XPCOMCore on top of.
+ * <span class="attrib">@param</span> {Object} mixinScope Optional argument, any object to mix {<span class="attrib">@link</span> Kernel}'s properties
+ * into.
+ * <span class="attrib">@return</span> The prototype object of the Kernel function.
+ */</span>
+<span class="reserved">function</span> Kernel(mixinScope) {
+  var myPrototype = arguments.callee.<span class="reserved">prototype</span>;
+  <span class="reserved">if</span> (mixinScope) {
+    var makeGetter = <span class="reserved">function</span>(attr) { <span class="reserved">return</span> <span class="reserved">function</span>() { <span class="reserved">return</span> myPrototype[attr]; } };
+    <span class="reserved">for</span> (var p in myPrototype) { mixinScope.__defineGetter__(p, makeGetter(p)); };
+  };
+  <span class="reserved">return</span> myPrototype;
+};
 
-<span class="comment">// Taking some inspiration from Ruby here...</span>
-const $LOAD_PATH = [XPCOMCore.libRoot];
-const $LOADED_FEATURES = [<span class="literal">"kernel.js"</span>];
+Kernel.<span class="reserved">prototype</span> = {
+  <span class="comment">/** 
+   * A shortcut constant to Components.classes.
+   * <span class="attrib">@final</span>
+   */</span>
+  Cc: Components.classes,
 
-const $FILE = <span class="reserved">function</span>() {
-  var ioService = Cc[<span class="literal">"@mozilla.org/network/io-service;1"</span>].getService(Ci.nsIIOService);
-  var thisFile = (new Error).stack.split(<span class="literal">"\n"</span>)[2].split(<span class="literal">"@"</span>)[1].split(<span class="literal">" -&gt; "</span>).slice(-1)[0].split(/:[0-9]/)[0];
-  var thisFileURI = ioService.newURI(thisFile, null, null);
+  <span class="comment">/** 
+   * A shortcut constant to Components.interfaces.
+   * <span class="attrib">@final</span>
+   */</span>
+  Ci: Components.interfaces,
+
+  <span class="comment">/** 
+   * A shortcut constant to Components.results.
+   * <span class="attrib">@final</span>
+   */</span>
+  Cr: Components.results,
+
+  <span class="comment">/** 
+   * A shortcut constant to Components.utils.
+   * <span class="attrib">@final</span>
+   */</span>
+  Cu: Components.utils,
+
+  <span class="comment">/** 
+   * Taking inspiration from Ruby, this defines the set of paths to check when
+   * trying to load a file via either {<span class="attrib">@link</span> Kernel#load} or {<span class="attrib">@link</span> Kernel#require}.
+   * <span class="attrib">@final</span>
+   * <span class="attrib">@type</span> Array
+   */</span>
+  LOAD_PATH: [XPCOMCoreConfig.getProperty(<span class="literal">'libRoot'</span>)],
+
+  <span class="comment">/** 
+   * Taking inspiration from Ruby, this defines the currently loaded files that
+   * have been loaded through {<span class="attrib">@link</span> Kernel#require}.
+   * <span class="attrib">@final</span>
+   * <span class="attrib">@type</span> Array
+   */</span>
+  LOADED_FEATURES: [<span class="literal">"kernel.js"</span>],
   
-  <span class="reserved">if</span> (thisFileURI.scheme == <span class="literal">"resource"</span>) {
-    var resProt = ioService.getProtocolHandler(<span class="literal">"resource"</span>).QueryInterface(Components.interfaces.nsIResProtocolHandler);
-    <span class="reserved">return</span> ioService.newURI(resProt.resolveURI(thisFileURI), null, null).QueryInterface(Ci.nsIURL).path;
-  } <span class="reserved">else</span> <span class="reserved">if</span> (thisFileURI.scheme == <span class="literal">"file"</span>) {
-    <span class="reserved">return</span> thisFileURI.QueryInterface(Ci.nsIURL).path;
-  } <span class="reserved">else</span> {
-    <span class="comment">// FIXME - throw an appropriate exception here.</span>
-    <span class="reserved">return</span> null;
-  }
-}
+  <span class="comment">/** 
+   * Taking inspiration from Ruby, this method tries to determine the filesystem path to
+   * the caller code of this method.
+   * <span class="attrib">@type</span> String
+   * <span class="attrib">@throws</span> {<span class="attrib">@link</span> SelfConceptError} Thrown when we can't figure out what the filesystem
+   * path to the current file is.
+   */</span>
+  CURRENT_FILE: <span class="reserved">function</span>() {
+    var ioService = Cc[<span class="literal">"@mozilla.org/network/io-service;1"</span>].getService(Ci.nsIIOService);
+    <span class="comment">// FIXME - UGH. This is so seedy.</span>
+    var thisFile = (new Error).stack.split(<span class="literal">"\n"</span>)[2].split(<span class="literal">"@"</span>)[1].split(<span class="literal">" -&gt; "</span>).slice(-1)[0].split(/:[0-9]/)[0];
+    var thisFileURI = ioService.newURI(thisFile, null, null);
+    
+    <span class="comment">// If we're loaded as a resource, resolve ourselves to an actual filesystem path and return that.</span>
+    <span class="reserved">if</span> (thisFileURI.scheme == <span class="literal">"resource"</span>) {
+      var resProt = ioService.getProtocolHandler(<span class="literal">"resource"</span>).QueryInterface(Components.interfaces.nsIResProtocolHandler);
+      <span class="reserved">return</span> ioService.newURI(resProt.resolveURI(thisFileURI), null, null).QueryInterface(Ci.nsIURL).path;
+    <span class="comment">// If we're loaded as a file, just return our path.</span>
+    } <span class="reserved">else</span> <span class="reserved">if</span> (thisFileURI.scheme == <span class="literal">"file"</span>) {
+      <span class="reserved">return</span> thisFileURI.QueryInterface(Ci.nsIURL).path;
+    } <span class="reserved">else</span> {
+      throw(new SelfConceptError(<span class="literal">"The filesystem location of the current file could not be determined."</span>));
+    }
+  },
 
-const Kernel = {
-  
+  <span class="comment">/** 
+   * Prints a string to standard out, without a trailing newline.
+   * <span class="attrib">@param</span> {String} str String to print to standard out.
+   */</span>
   print: <span class="reserved">function</span>(str) {
     dump(str);
   },
   
+  <span class="comment">/** 
+   * Prints a string to standard out, with a trailing newline.
+   * <span class="attrib">@param</span> {String} str String to print to standard out.
+   */</span>
   puts: <span class="reserved">function</span>(str) {
     print(str + <span class="literal">"\n"</span>);
   },
-
+  
+  <span class="comment">/**
+   * Searches {<span class="attrib">@link</span> Kernel#LOAD_PATH LOAD_PATH} for files to load into the current global scope.
+   * Files loaded via this method will not be added to {<span class="attrib">@link</span> Kernel#LOADED_FEATURES} and hence
+   * can be repeatedly loaded and executed.
+   * <span class="attrib">@param</span> {String} featurePath Full or relative path including file extension to try and load.
+   * <span class="attrib">@type</span> Boolean
+   * <span class="attrib">@throws</span> {<span class="attrib">@link</span> LoadError} Thrown when we can't find the specified file in any directories specified
+   * in {<span class="attrib">@link</span> Kernel#LOAD_PATH LOAD_PATH}.
+   */</span>
   load: <span class="reserved">function</span>(featurePath) {
     var loader = Cc[<span class="literal">"@mozilla.org/moz/jssubscript-loader;1"</span>].getService(Ci.mozIJSSubScriptLoader);
     var foundFile = null;
     <span class="comment">// FIXME - so this is kinda shitty. We have an empty entry here so we default to just trying to load </span>
     <span class="comment">// from an absolute path</span>
-    var loadPath = $LOAD_PATH.concat([<span class="literal">""</span>]);
+    var loadPath = LOAD_PATH.concat([<span class="literal">""</span>]);
     var loadPathLength = loadPath.length;
     <span class="comment">// FIXME - mozilla bug here. if i use foreach on array it ignores the granted security privileges</span>
     <span class="reserved">for</span> (var i = 0; i &lt; loadPathLength; i++) {
@@ -187,25 +284,31 @@ const Kernel = {
     <span class="reserved">if</span> (foundFile) {
       foundFile.normalize();
       loader.loadSubScript(<span class="literal">"file://"</span> + encodeURI(foundFile.path));
-      $LOADED_FEATURES.push(featurePath)  
     } <span class="reserved">else</span> {
-      throw(LoadError);
+      throw(new LoadError(<span class="literal">"no such file to load -- "</span> + featurePath));
     }
   },
-  
+
+  <span class="comment">/**
+   * Searches {<span class="attrib">@link</span> Kernel#LOAD_PATH LOAD_PATH} for features to load into the current global scope.
+   * Files loaded via this method will be added to {<span class="attrib">@link</span> Kernel#LOADED_FEATURES} and hence two 
+   * consecutive calls to this method will not load and execute the code twice.
+   * <span class="attrib">@type</span> Boolean True if successful, false if the specified feature has already been required.
+   * <span class="attrib">@param</span> {String} featurePath Full or relative path without the file extension to try and require.
+   * <span class="attrib">@throws</span> {<span class="attrib">@link</span> LoadError} Thrown when we can't find the specified feature in any directories specified
+   * in {<span class="attrib">@link</span> Kernel#LOAD_PATH LOAD_PATH}.
+   */</span>  
   require: <span class="reserved">function</span>(feature) {
     var jsFeature = feature + <span class="literal">".js"</span>;
-    <span class="reserved">if</span> ($LOADED_FEATURES.indexOf(jsFeature) == -1) {
+    <span class="reserved">if</span> (LOADED_FEATURES.indexOf(jsFeature) == -1) {
       load(jsFeature);
+      LOADED_FEATURES.push(jsFeature);
       <span class="reserved">return</span> true;
     } <span class="reserved">else</span> {
       <span class="reserved">return</span> false;
     }
   }
-}
-
-<span class="comment">// FIXME - i just puked in my mouth a little.</span>
-<span class="reserved">for</span> (p in Kernel) { eval(<span class="literal">'var '</span> + p + <span class="literal">' = Kernel[p];'</span>); }</pre>
+};</pre>
 	<hr>
 
 
@@ -263,6 +366,6 @@ const Kernel = {
 <font size="-1">
 
 </font>
-<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Thu Sep 10 15:48:30 2009</div>
+<div class="jsdoc_ctime">Documentation generated by <a href="http://jsdoc.sourceforge.net/" target="_parent">JSDoc</a> on Mon Sep 14 12:04:18 2009</div>
 </body>
 </html>
