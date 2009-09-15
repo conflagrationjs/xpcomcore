@@ -21,6 +21,15 @@ XULTestCase.create("Kernel Test", function(setup, teardown, test) {
   test("CURRENT_FILE should end in kernel_test.js", function(){
     this.assertMatch(/kernel_test.js$/, CURRENT_FILE);
   });
+
+
+  test("CURRENT_DIRECTORY should be exposed as a getter that returns a value that is not a function", function(){
+    this.assertNotEqual("function", typeof(CURRENT_DIRECTORY));
+  });
+
+  test("CURRENT_DIRECTORY should end in test", function(){
+    this.assertMatch(/test$/, CURRENT_DIRECTORY);
+  });
   
   
   test("load should throw an exception when you give it a non-existent resource", function() {
