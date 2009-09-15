@@ -82,7 +82,7 @@ XPCOMCore.prototype = {
   
 };
 
-var XPCOMCoreConstructorInterfaces = [Ci.nsIClassInfo, Components.interfaces.nsIXPCConstructor, Ci.nsIXPCScriptable];
+var XPCOMCoreConstructorInterfaces = [Ci.nsIClassInfo, Ci.nsIXPCConstructor, Ci.nsIXPCScriptable];
 
 // Singleton
 var XPCOMCoreConstructor = function() {
