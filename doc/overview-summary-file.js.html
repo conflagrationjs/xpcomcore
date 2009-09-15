@@ -8,7 +8,7 @@ XPCOMCore Overview
 <script>
 function asd() {
 	
-		parent.document.title="XPCOMCore Overview";
+		parent.document.title="file.js Overview";
 	
 }
 </script>
@@ -25,8 +25,8 @@ function asd() {
   <tr align="center" valign="top">
   
   
-  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>Overview</b></font>&nbsp;</td>
-  <td bgcolor="#EEEEFF" class="NavBarCell1"> <font class="NavBarFont1">File</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
   
 
   <td bgcolor="#FFFFFF" class="NavBarCell1"> 	<font class="NavBarFont1">Class</font>&nbsp;</td>
@@ -68,22 +68,17 @@ function asd() {
 <hr>
 <center>
 	
-	   <h2>XPCOMCore</h2>
+	   <h2>file.js</h2>
 	
 </center>
 
-	
-		<p>
-			This document is the API Specification for 
-			XPCOMCore.
-		</p>
 	
 
 
 <h4>Summary</h4>
 <p>
 	
-    	No summary generated for these documents.
+		This file defines the implementation of our File object.<BR/><BR/>
 	
 </p>
 
@@ -94,22 +89,14 @@ function asd() {
     <tr bgcolor="#CCCCFF" class="TableHeadingColor">
     <td colspan=2><font size="+2">
     
-        <b>File Summary</b>
+        <b>Class Summary</b>
     
     </font></td>
     </tr>
     
     <tr bgcolor="white" class="TableRowColor">
-    <td width="15%"><b><a href="overview-summary-file.js.html">file.js</a></b></td>
-    <td>This file defines the implementation of our File object.</td>
-    </tr>
-    
-    <tr bgcolor="white" class="TableRowColor">
-    <td width="15%"><b><a href="overview-summary-kernel.js.html">kernel.js</a></b></td>
-    <td>This file specifies a set of globally useful features/shortcuts
- and defines our "Kernel" object, which is the base for doing a lot of simple
- things with XPCOMCore such as loading in other files and printing to the
- console.</td>
+    <td width="15%"><b><a href="File.html">File</a></b></td>
+    <td>&nbsp;</td>
     </tr>
     
     </table>
@@ -120,6 +107,54 @@ function asd() {
 
 <!-- ========== END METHOD SUMMARY =========== -->
 
+
+        <pre class="sourceview"><span class="comment">/** 
+ * <span class="attrib">@fileoverview</span> This file defines the implementation of our File object.
+ */</span>
+
+<span class="comment">/**
+ * This will have docs when it actually does something
+ */</span>
+<span class="reserved">function</span> File() {};
+
+<span class="comment">/** 
+ * Joins the given string arguments together using the operating system's native path
+ * separator.
+ * <span class="attrib">@param</span> {String} Set of strings to join together.
+ * <span class="attrib">@type</span> String
+ */</span>
+File.join = <span class="reserved">function</span>() {
+  var file = Cc[<span class="literal">"@mozilla.org/file/local;1"</span>].createInstance(Ci.nsILocalFile);
+  file.initWithPath(arguments[0]);
+  
+  <span class="reserved">for</span>(var i = 1; i &lt; arguments.length; i++) {
+    file.append(arguments[i]);
+  }
+  
+  <span class="reserved">return</span> file.path;
+};
+
+<span class="comment">/** 
+ * Reads the given number of bytes (or the entire contents if the argument is ommitted)
+ * from the specified file
+ * <span class="attrib">@param</span> {String} Path to a file.
+ * <span class="attrib">@param</span> {int} Optional - number of bytes to read from the file.
+ * <span class="attrib">@type</span> String
+ */</span>
+File.read = <span class="reserved">function</span>(filePath, maxBytes) {
+  var file = Cc[<span class="literal">"@mozilla.org/file/local;1"</span>].createInstance(Ci.nsILocalFile);
+  file.initWithPath(filePath);
+  var fileInputStream = Cc[<span class="literal">"@mozilla.org/network/file-input-stream;1"</span>].createInstance(Ci.nsIFileInputStream);
+  var scriptableStream = Cc[<span class="literal">"@mozilla.org/scriptableinputstream;1"</span>].createInstance(Ci.nsIScriptableInputStream);
+  fileInputStream.init(file, -1, -1, 0);
+  scriptableStream.init(fileInputStream);
+  try {
+    <span class="reserved">return</span> scriptableStream.read(maxBytes || scriptableStream.available());
+  } finally {
+    scriptableStream.close();
+  }
+};</pre>
+	<hr>
 
 
 
@@ -133,8 +168,8 @@ function asd() {
   <tr align="center" valign="top">
   
   
-  <td bgcolor="#FFFFFF" class="NavBarCell1Rev"> &nbsp;<font class="NavBarFont1Rev"><b>Overview</b></font>&nbsp;</td>
-  <td bgcolor="#EEEEFF" class="NavBarCell1"> <font class="NavBarFont1">File</font>&nbsp;</td>
+  <td bgcolor="#EEEEFF" class="NavBarCell1">    <a href="overview-summary.html"><font class="NavBarFont1"><b>Overview</b></font></a>&nbsp;</td>
+  <td bgcolor="#FFFFFF" class="NavBarCell1Rev">	&nbsp;<font class="NavBarFont1Rev"><b>File</b></font>&nbsp;</td>
   
 
   <td bgcolor="#FFFFFF" class="NavBarCell1"> <font class="NavBarFont1">Class</font>&nbsp;</td>
