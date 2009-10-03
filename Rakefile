@@ -1,6 +1,6 @@
 require 'pathname'
 require 'yaml'
-here = (Pathname(__FILE__).parent)
+here = (Pathname(__FILE__).parent.expand_path)
 
 task :test do
   ENV['XPCOMCORE'] = Pathname(__FILE__).parent.expand_path.to_s
@@ -11,11 +11,12 @@ task :default => :test
 
 namespace :docs do
   doc_dir = here + "doc"
+  jsdoc_loc = here + "etc/jsdoc-toolkit"
   
   desc "Builds the documentation"
   task :build do
-    raise "jsdoc.pl does not seem to be in your PATH." if `which jsdoc.pl`.chomp.empty?
-    system(%Q[jsdoc.pl --project-name XPCOMCore -r -d "#{doc_dir}" "#{here + "lib"}"])
+    raise "java does not seem to be in your PATH." if `which java`.chomp.empty?
+    system(%Q[java -jar "#{jsdoc_loc}/jsrun.jar" "#{jsdoc_loc}/app/run.js" -r -a -t="#{jsdoc_loc}/templates/jsdoc" -d="#{doc_dir}" lib])
   end
   
   task :clean do
