@@ -4,7 +4,7 @@ here = (Pathname(__FILE__).parent.expand_path)
 
 task :test do
   ENV['XPCOMCORE'] = Pathname(__FILE__).parent.expand_path.to_s
-  exec("xultest", "-testDir", (Pathname(__FILE__).parent + "test/").expand_path.to_s)
+  exec(ENV['XULTEST'] || "xultest", "-testDir", (Pathname(__FILE__).parent + "test/").expand_path.to_s)
 end
 
 task :default => :test
