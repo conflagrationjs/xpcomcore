@@ -369,7 +369,7 @@ the caller code of this method.</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/Kernel.html#load">load</a></b>(featurePath)
 								</div>
-								<div class="description">Searches {@link Kernel#$LOAD_PATH $LOAD_PATH} for files to load into the current global scope.</div>
+								<div class="description">Searches <a href="../symbols/Kernel.html#$LOAD_PATH">Kernel#$LOAD_PATH</a> for files to load into the current global scope.</div>
 							</td>
 						</tr>
 					
@@ -414,7 +414,7 @@ the caller code of this method.</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/Kernel.html#require">require</a></b>(featurePath)
 								</div>
-								<div class="description">Searches {@link Kernel#$LOAD_PATH $LOAD_PATH} for features to load into the current global scope.</div>
+								<div class="description">Searches <a href="../symbols/Kernel.html#$LOAD_PATH">Kernel#$LOAD_PATH</a> for features to load into the current global scope.</div>
 							</td>
 						</tr>
 					
@@ -671,13 +671,20 @@ figure out who called us. The default is usually safe.</dd>
 							<dt class="heading">Throws:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{@link SelfConceptError}</span>  <b></b>
+									<span class="light fixedFont">{<a href="../symbols/SelfConceptError.html">SelfConceptError</a>}</span>  <b></b>
 								</dt>
 								<dd>Thrown when we can't figure out what the filesystem
 path to the parent directory of the current file is.</dd>
 							
 							</dl>
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> The path to the current directory</dd>
+							
+							</dl>
 						
 						
 						
@@ -726,13 +733,20 @@ figure out who called us. The default is usually safe.</dd>
 							<dt class="heading">Throws:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{@link SelfConceptError}</span>  <b></b>
+									<span class="light fixedFont">{<a href="../symbols/SelfConceptError.html">SelfConceptError</a>}</span>  <b></b>
 								</dt>
 								<dd>Thrown when we can't figure out what the filesystem
 path to the current file is.</dd>
 							
 							</dl>
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> The path to the current file</dd>
+							
+							</dl>
 						
 						
 						
@@ -747,7 +761,7 @@ path to the current file is.</dd>
 					
 					</div>
 					<div class="description">
-						Searches {@link Kernel#$LOAD_PATH $LOAD_PATH} for files to load into the current global scope.
+						Searches <a href="../symbols/Kernel.html#$LOAD_PATH">Kernel#$LOAD_PATH</a> for files to load into the current global scope.
 Files loaded via this method will not be added to <a href="../symbols/Kernel.html#$LOADED_FEATURES">Kernel#$LOADED_FEATURES</a> and hence
 can be repeatedly loaded and executed.
 						
@@ -775,13 +789,20 @@ can be repeatedly loaded and executed.
 							<dt class="heading">Throws:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{@link LoadError}</span>  <b></b>
+									<span class="light fixedFont">{<a href="../symbols/LoadError.html">LoadError</a>}</span>  <b></b>
 								</dt>
 								<dd>Thrown when we can't find the specified file in any directories specified
-in {@link Kernel#$LOAD_PATH $LOAD_PATH}.</dd>
+in <a href="../symbols/Kernel.html#$LOAD_PATH">Kernel#$LOAD_PATH</a>.</dd>
 							
 							</dl>
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> True if the file was loaded succesfully</dd>
+							
+							</dl>
 						
 						
 						
@@ -941,12 +962,12 @@ in {@link Kernel#$LOAD_PATH $LOAD_PATH}.</dd>
 					<a name="require"> </a>
 					<div class="fixedFont">
 					
-					<span class="light">{Boolean True if successful, false if the specified feature has already been required.}</span>
+					<span class="light">{Boolean}</span>
 					<b>require</b>(featurePath)
 					
 					</div>
 					<div class="description">
-						Searches {@link Kernel#$LOAD_PATH $LOAD_PATH} for features to load into the current global scope.
+						Searches <a href="../symbols/Kernel.html#$LOAD_PATH">Kernel#$LOAD_PATH</a> for features to load into the current global scope.
 Files loaded via this method will be added to <a href="../symbols/Kernel.html#$LOADED_FEATURES">Kernel#$LOADED_FEATURES</a> and hence two 
 consecutive calls to this method will not load and execute the code twice.
 						
@@ -974,13 +995,20 @@ consecutive calls to this method will not load and execute the code twice.
 							<dt class="heading">Throws:</dt>
 							
 								<dt>
-									<span class="light fixedFont">{@link LoadError}</span>  <b></b>
+									<span class="light fixedFont">{<a href="../symbols/LoadError.html">LoadError</a>}</span>  <b></b>
 								</dt>
 								<dd>Thrown when we can't find the specified feature in any directories specified
-in {@link Kernel#$LOAD_PATH $LOAD_PATH}.</dd>
+in <a href="../symbols/Kernel.html#$LOAD_PATH">Kernel#$LOAD_PATH</a>.</dd>
 							
 							</dl>
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> True if successful, false if the specified feature has already been required.</dd>
+							
+							</dl>
 						
 						
 						
@@ -1024,7 +1052,7 @@ in {@link Kernel#$LOAD_PATH $LOAD_PATH}.</dd>
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.0 on Sat Oct 03 2009 19:31:42 GMT-0500 (CDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.0 on Sat Oct 03 2009 19:47:12 GMT-0500 (CDT)
 		</div>
 	</body>
 </html>
