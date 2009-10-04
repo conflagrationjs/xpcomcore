@@ -1,8 +1,8 @@
 XULTestCase.create("Kernel Test", function(setup, teardown, test) {
   setup(function() {
     // FIXME: Replace with real File class.
-    this.File = Components.Constructor("@mozilla.org/file/local;1", Ci.nsILocalFile, "initWithPath");
-    LOAD_PATH.push(this.File(CURRENT_FILE).parent.path + "/fixtures");
+    this.File = Components.Constructor("@mozilla.org/file/local;1", $Ci.nsILocalFile, "initWithPath");
+    $LOAD_PATH.push(this.File($CURRENT_FILE).parent.path + "/fixtures");
   });
   
   test("Kernel() function should mix its properties into the passed in scope", function(){
@@ -14,21 +14,21 @@ XULTestCase.create("Kernel Test", function(setup, teardown, test) {
   });
   
   
-  test("CURRENT_FILE should be exposed as a getter that returns a value that is not a function", function(){
-    this.assertNotEqual("function", typeof(CURRENT_FILE));
+  test("$CURRENT_FILE should be exposed as a getter that returns a value that is not a function", function(){
+    this.assertNotEqual("function", typeof($CURRENT_FILE));
   });
 
-  test("CURRENT_FILE should end in kernel_test.js", function(){
-    this.assertMatch(/kernel_test.js$/, CURRENT_FILE);
+  test("$CURRENT_FILE should end in kernel_test.js", function(){
+    this.assertMatch(/kernel_test.js$/, $CURRENT_FILE);
   });
 
 
-  test("CURRENT_DIRECTORY should be exposed as a getter that returns a value that is not a function", function(){
-    this.assertNotEqual("function", typeof(CURRENT_DIRECTORY));
+  test("$CURRENT_DIRECTORY should be exposed as a getter that returns a value that is not a function", function(){
+    this.assertNotEqual("function", typeof($CURRENT_DIRECTORY));
   });
 
-  test("CURRENT_DIRECTORY should end in test", function(){
-    this.assertMatch(/test$/, CURRENT_DIRECTORY);
+  test("$CURRENT_DIRECTORY should end in test", function(){
+    this.assertMatch(/test$/, $CURRENT_DIRECTORY);
   });
   
   
@@ -58,7 +58,7 @@ XULTestCase.create("Kernel Test", function(setup, teardown, test) {
   test("load works when using absolute paths", function() {
     love = false;
     
-    var absolutePath = this.File(CURRENT_FILE).parent.path + "/fixtures/love.js";
+    var absolutePath = this.File($CURRENT_FILE).parent.path + "/fixtures/love.js";
     // FIXME: this is unix-only and janky:
     this.assertMatch(/^\//, absolutePath);
     

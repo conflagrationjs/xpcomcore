@@ -1,11 +1,11 @@
 var XPCOMCoreVersion = '0.3.1'; // DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @XPCOMCORE_VERSION@
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 
-const Cc = Components.classes;
-const Ci = Components.interfaces;
+const $Cc = Components.classes;
+const $Ci = Components.interfaces;
 
-var ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
-var libRoot = ioService.newURI("resource://xpcomcore/lib", null, null).QueryInterface(Ci.nsIFileURL).file.path;
+var ioService = $Cc["@mozilla.org/network/io-service;1"].getService($Ci.nsIIOService);
+var libRoot = ioService.newURI("resource://xpcomcore/lib", null, null).QueryInterface($Ci.nsIFileURL).file.path;
 
 // NOTE - XPCOMCore is a singleton
 var XPCOMCore = function() { 
@@ -14,7 +14,7 @@ var XPCOMCore = function() {
   // Private method that does the work of loading the XPCOMCore kernel
   // into the given scope.
   var loadKernel = function(importScope) {
-    var loader = Cc["@mozilla.org/moz/jssubscript-loader;1"].getService(Ci.mozIJSSubScriptLoader);
+    var loader = $Cc["@mozilla.org/moz/jssubscript-loader;1"].getService($Ci.mozIJSSubScriptLoader);
     loader.loadSubScript("resource://xpcomcore/lib/kernel.js", importScope);
   };
   
@@ -53,7 +53,7 @@ var XPCOMCore = function() {
 // Bahaha - we rely on http://mxr.mozilla.org/mozilla1.8/source/js/src/xpconnect/src/xpcwrappedjsclass.cpp#528
 // (as written about in http://weblogs.mozillazine.org/weirdal/archives/019778.html) to expose a getProperty
 // method on this object to allow for getting arbitrary properties.
-var XPCOMCoreInterfaces = [Ci.nsIClassInfo, Ci.nsIPropertyBag, Ci.nsIWritableVariant];
+var XPCOMCoreInterfaces = [$Ci.nsIClassInfo, $Ci.nsIPropertyBag, $Ci.nsIWritableVariant];
 
 XPCOMCore.prototype = {
   classDescription: "XPCOMCore Core Object",
@@ -72,17 +72,17 @@ XPCOMCore.prototype = {
   getHelperForLanguage: function(aLanguage) { return null; },
   
   // implemented for nsIClassInfo
-  implementationLanguage: Ci.nsIProgrammingLanguage.JAVASCRIPT,
+  implementationLanguage: $Ci.nsIProgrammingLanguage.JAVASCRIPT,
   
   // implemented for nsIClassInfo
-  flags: Ci.nsIClassInfo.SINGLETON,
+  flags: $Ci.nsIClassInfo.SINGLETON,
   
   get version() { return new String(XPCOMCoreVersion); },
   get libRoot() { return new String(libRoot); }
   
 };
 
-var XPCOMCoreConstructorInterfaces = [Ci.nsIClassInfo, Ci.nsIXPCConstructor, Ci.nsIXPCScriptable];
+var XPCOMCoreConstructorInterfaces = [$Ci.nsIClassInfo, $Ci.nsIXPCConstructor, $Ci.nsIXPCScriptable];
 
 // Singleton
 var XPCOMCoreConstructor = function() {
@@ -109,10 +109,10 @@ XPCOMCoreConstructor.prototype = {
   getHelperForLanguage: function(aLanguage) { return null; },
   
   // implemented for nsIClassInfo
-  implementationLanguage: Ci.nsIProgrammingLanguage.JAVASCRIPT,
+  implementationLanguage: $Ci.nsIProgrammingLanguage.JAVASCRIPT,
   
   // implemented for nsIClassInfo
-  flags: Ci.nsIClassInfo.SINGLETON
+  flags: $Ci.nsIClassInfo.SINGLETON
 }
 
 NSGetModule = function(compMgr, fileSpec) {
