@@ -20,7 +20,7 @@ namespace :docs do
   end
   
   task :clean do
-    system(%Q[cd "#{here}" && git rm "doc/*"])    
+    system(%Q[cd "#{here}" && git rm -rf "doc/*"])    
     FileUtils.rm_rf(doc_dir)
     FileUtils.mkdir(doc_dir)
   end
