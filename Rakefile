@@ -22,6 +22,7 @@ namespace :docs do
   task :clean do
     FileUtils.rm_rf(doc_dir)
     FileUtils.mkdir(doc_dir)
+    system(%Q[cd "#{here}" && git rm "doc/*"])    
   end
   
   task :commit do
@@ -30,7 +31,7 @@ namespace :docs do
   
   task :update_gh_pages do
     current_branch = `cd "#{here}" && git branch 2> /dev/null | grep -e '\\* ' | sed 's/^..\\(.*\\)/\\1/'`.chomp
-    system(%Q[cd "#{here}" && git checkout gh-pages && git merge master --no-commit && git reset HEAD . && git add "doc" && git commit -m "Updating docs for GH pages" && git checkout -f #{current_branch}])
+    system(%Q[cd "#{here}" && git checkout gh-pages && git rm -rf doc && git checkout master doc && git add doc && git commit -m "Updating docs for GH pages" && git checkout -f #{current_branch}])
   end
 
 end
