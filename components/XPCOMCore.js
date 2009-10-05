@@ -6,6 +6,7 @@ const $Ci = Components.interfaces;
 
 var ioService = $Cc["@mozilla.org/network/io-service;1"].getService($Ci.nsIIOService);
 var libRoot = ioService.newURI("resource://xpcomcore/lib", null, null).QueryInterface($Ci.nsIFileURL).file.path;
+var binRoot = ioService.newURI("resource://xpcomcore/bin", null, null).QueryInterface($Ci.nsIFileURL).file.path;
 
 // NOTE - XPCOMCore is a singleton
 var XPCOMCore = function() { 
@@ -78,7 +79,8 @@ XPCOMCore.prototype = {
   flags: $Ci.nsIClassInfo.SINGLETON,
   
   get version() { return new String(XPCOMCoreVersion); },
-  get libRoot() { return new String(libRoot); }
+  get libRoot() { return new String(libRoot); },
+  get binRoot() { return new String(binRoot); }
   
 };
 

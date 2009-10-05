@@ -85,4 +85,13 @@ XULTestCase.create("Kernel Test", function(setup, teardown, test) {
     this.assertEqual(false, mad_world);
   });
   
+  test("should expose a $ENV object that allows for getting environment variables", function() {
+    this.assert($ENV.get('HOME'));
+  });
+  
+  test("should expose a $ENV object that allows for setting environment variables", function() {
+    $ENV.set('XPCOMCORETEST', "testing");
+    this.assertEqual($ENV.get('XPCOMCORETEST'), "testing");
+  });
+  
 });
