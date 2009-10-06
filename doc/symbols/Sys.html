@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - LoadError</title>
+		<title>JsDoc Reference - Sys</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -214,26 +214,24 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class LoadError
+				Namespace Sys
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
 			<p class="description">
-				<br />Extends
-					<a href="../symbols/Error.html">Error</a>.<br />
 				
 			
-				Exception representing an error loading a file.
+				Sys namespace used for things such as executing external commands.
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/lib_kernel.js.html">kernel.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/lib_sys.js.html">sys.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class LoadError.">
-				<caption>Class Summary</caption>
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class Sys.">
+				<caption>Namespace Summary</caption>
 				<thead>
 					<tr>
 						<th scope="col">Constructor Attributes</th>
@@ -245,7 +243,7 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/LoadError.html#constructor">LoadError</a></b>(message)
+								<b><a href="../symbols/Sys.html#constructor">Sys</a></b>
 							</div>
 							<div class="description"></div>
 						</td>
@@ -259,6 +257,35 @@ ul.inheritsList
 
 <!-- ============================== methods summary ======================== -->
 			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class Sys.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">Sys.<b><a href="../symbols/Sys.html#.run">run</a></b>(parameters)
+								</div>
+								<div class="description">Runs the command given as the first parameter with the arguments given as the remaining
+parameters and returns an object containing the exit status (as the exitStatus property)
+and command output (as the output property).</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
 <!-- ============================== events summary ======================== -->
 			
 
@@ -266,11 +293,11 @@ ul.inheritsList
 			
 			<div class="details"><a name="constructor"> </a>
 				<div class="sectionTitle">
-					Class Detail
+					Namespace Detail
 				</div>
 				
 				<div class="fixedFont">
-						<b>LoadError</b>(message)
+						<b>Sys</b>
 				</div>
 				
 				<div class="description">
@@ -282,27 +309,9 @@ ul.inheritsList
 				
 				
 					
-						<dl class="detailList">
-						<dt class="heading">Parameters:</dt>
-						
-							<dt>
-								<span class="light fixedFont">{String}</span>  <b>message</b>
-								
-							</dt>
-								<dd>The error message to be given for this exception.</dd>
-						
-						</dl>
 					
 					
 					
-					
-					
-						<dl class="detailList">
-						<dt class="heading">Returns:</dt>
-						
-								<dd><span class="light fixedFont">{<a href="../symbols/Error.html">Error</a>}</span> </dd>
-						
-						</dl>
 					
 					
 					
@@ -314,6 +323,57 @@ ul.inheritsList
 			
 
 <!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name=".run"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{Object}</span>
+					<span class="light">Sys.</span><b>run</b>(parameters)
+					
+					</div>
+					<div class="description">
+						Runs the command given as the first parameter with the arguments given as the remaining
+parameters and returns an object containing the exit status (as the exitStatus property)
+and command output (as the output property).
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>parameters</b>
+									
+								</dt>
+								<dd>First parameter is command name, rest are arguments to
+invoke the command with.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Object}</span> Object with 'exitStatus' and 'output' properties.</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
 			
 			
 <!-- ============================== event details ========================= -->		
