@@ -1,0 +1,62 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/** 
+<span class='line'>  2</span>  * @fileoverview This file defines the implementation of our Sys namespace.
+<span class='line'>  3</span>  */</span><span class="WHIT">
+<span class='line'>  4</span> 
+<span class='line'>  5</span> </span><span class="COMM">/**
+<span class='line'>  6</span>  * @namespace Sys namespace used for things such as executing external commands.
+<span class='line'>  7</span>  */</span><span class="WHIT">
+<span class='line'>  8</span> </span><span class="WHIT"> 
+<span class='line'>  9</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">Sys</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 10</span> </span><span class="WHIT">  
+<span class='line'> 11</span>   </span><span class="COMM">/** 
+<span class='line'> 12</span>    * This getter returns the current temp directory as returned by the XPCOM directory service.
+<span class='line'> 13</span>    * @returns {String} The path to the temp directory
+<span class='line'> 14</span>    */</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">  </span><span class="NAME">get</span><span class="WHIT"> </span><span class="NAME">tempDir</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">$Cc</span><span class="PUNC">[</span><span class="STRN">"@mozilla.org/file/directory_service;1"</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">getService</span><span class="PUNC">(</span><span class="NAME">$Ci.nsIProperties</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">get</span><span class="PUNC">(</span><span class="STRN">"TmpD"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">$Ci.nsIFile</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">path</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 17</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 18</span> </span><span class="WHIT">  
+<span class='line'> 19</span>   </span><span class="COMM">/** 
+<span class='line'> 20</span>    * Runs the command given as the first parameter with the arguments given as the remaining
+<span class='line'> 21</span>    * parameters and returns an object containing the exit status (as the exitStatus property)
+<span class='line'> 22</span>    * and command output (as the output property).
+<span class='line'> 23</span>    * @param {String[]} parameters First parameter is command name, rest are arguments to
+<span class='line'> 24</span>    * invoke the command with.
+<span class='line'> 25</span>    * @returns {Object} Object with 'exitStatus' and 'output' properties.
+<span class='line'> 26</span>    */</span><span class="WHIT">
+<span class='line'> 27</span> </span><span class="WHIT">  </span><span class="NAME">run</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">tempDir</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Sys.tempDir</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">file</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$Cc</span><span class="PUNC">[</span><span class="STRN">"@mozilla.org/file/local;1"</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">createInstance</span><span class="PUNC">(</span><span class="NAME">$Ci.nsILocalFile</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">popenHelper</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">File.join</span><span class="PUNC">(</span><span class="NAME">XPCOMCoreConfig.getProperty</span><span class="PUNC">(</span><span class="STRN">'binRoot'</span><span class="PUNC">)</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"popen_helper.sh"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">    </span><span class="NAME">file.initWithPath</span><span class="PUNC">(</span><span class="NAME">popenHelper</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">process</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$Cc</span><span class="PUNC">[</span><span class="STRN">"@mozilla.org/process/util;1"</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">createInstance</span><span class="PUNC">(</span><span class="NAME">$Ci.nsIProcess</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">    </span><span class="NAME">process.init</span><span class="PUNC">(</span><span class="NAME">file</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">    
+<span class='line'> 35</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">args</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Array.prototype.slice.call</span><span class="PUNC">(</span><span class="NAME">arguments</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">procArgs</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="NAME">tempDir</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">"stdout"</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">concat</span><span class="PUNC">(</span><span class="NAME">args</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">    
+<span class='line'> 38</span>     </span><span class="NAME">process.run</span><span class="PUNC">(</span><span class="KEYW">false</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">procArgs</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">procArgs.length</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">    
+<span class='line'> 40</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">outputPipe</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">File.join</span><span class="PUNC">(</span><span class="NAME">tempDir</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">process.pid</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">".stdout.pipe"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 41</span> 
+<span class='line'> 42</span> </span><span class="WHIT">    </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">outputPipeFile</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">$Cc</span><span class="PUNC">[</span><span class="STRN">"@mozilla.org/file/local;1"</span><span class="PUNC">]</span><span class="PUNC">.</span><span class="NAME">createInstance</span><span class="PUNC">(</span><span class="NAME">$Ci.nsILocalFile</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">    </span><span class="NAME">outputPipeFile.initWithPath</span><span class="PUNC">(</span><span class="NAME">outputPipe</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">    
+<span class='line'> 45</span>     </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">output</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">    </span><span class="KEYW">while</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">outputPipeFile.exists</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">      </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">    </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">    
+<span class='line'> 50</span>     </span><span class="NAME">output</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">File.read</span><span class="PUNC">(</span><span class="NAME">outputPipe</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">    
+<span class='line'> 52</span>     </span><span class="KEYW">return</span><span class="PUNC">(</span><span class="PUNC">{</span><span class="NAME">exitStatus</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">process.exitValue</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">output</span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">output</span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 55</span> </span></pre></body></html>
