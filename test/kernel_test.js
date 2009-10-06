@@ -1,8 +1,6 @@
 XULTestCase.create("Kernel Test", function(setup, teardown, test) {
   setup(function() {
-    // FIXME: Replace with real File class.
-    this.File = Components.Constructor("@mozilla.org/file/local;1", $Ci.nsILocalFile, "initWithPath");
-    $LOAD_PATH.push(this.File($CURRENT_FILE).parent.path + "/fixtures");
+    $LOAD_PATH.push(File.join($CURRENT_DIRECTORY, "fixtures"));
   });
   
   test("Kernel() function should mix its properties into the passed in scope", function(){
@@ -57,8 +55,8 @@ XULTestCase.create("Kernel Test", function(setup, teardown, test) {
   
   test("load works when using absolute paths", function() {
     love = false;
-    
-    var absolutePath = this.File($CURRENT_FILE).parent.path + "/fixtures/love.js";
+
+    var absolutePath = File.join($CURRENT_DIRECTORY, "fixtures", "love.js");
     // FIXME: this is unix-only and janky:
     this.assertMatch(/^\//, absolutePath);
     
