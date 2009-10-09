@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - LoadError</title>
+		<title>JsDoc Reference - File</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -191,21 +191,21 @@ ul.inheritsList
 	
 	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
 	
-	<li><a href="../symbols/Error.html">Error</a></li>
+	<li><a href="../symbols/error.html">Error</a></li>
 	
-	<li><a href="../symbols/File.html">File</a></li>
+	<li><a href="../symbols/file.html">File</a></li>
 	
-	<li><a href="../symbols/File.NoSuchFileError.html">File.NoSuchFileError</a></li>
+	<li><a href="../symbols/file.nosuchfileerror.html">File.NoSuchFileError</a></li>
 	
-	<li><a href="../symbols/Kernel.html">Kernel</a></li>
+	<li><a href="../symbols/kernel.html">Kernel</a></li>
 	
-	<li><a href="../symbols/LoadError.html">LoadError</a></li>
+	<li><a href="../symbols/loaderror.html">LoadError</a></li>
 	
-	<li><a href="../symbols/SelfConceptError.html">SelfConceptError</a></li>
+	<li><a href="../symbols/selfconcepterror.html">SelfConceptError</a></li>
 	
-	<li><a href="../symbols/Sys.html">Sys</a></li>
+	<li><a href="../symbols/sys.html">Sys</a></li>
 	
-	<li><a href="../symbols/XPCBuiltins.html">XPCBuiltins</a></li>
+	<li><a href="../symbols/xpcbuiltins.html">XPCBuiltins</a></li>
 	
 </ul>
 <hr />
@@ -216,26 +216,24 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class LoadError
+				Class File
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
 			<p class="description">
 				
-				<br />Extends
-					<a href="../symbols/Error.html">Error</a>.<br />
 				
 			
-				Exception representing an error loading a file.
+				File class used for things such as creating filesystem paths, reading files, etc.
 				
 				
-					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_gabriel_Code_GitHub_xpcomcore_lib_kernel.js.html">kernel.js</a>.
+					<br /><i>Defined in: </i> <a href="../symbols/src/_Users_gabriel_Code_GitHub_xpcomcore_lib_file.js.html">file.js</a>.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class LoadError.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class File.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -248,7 +246,7 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/LoadError.html#constructor">LoadError</a></b>(message)
+								<b><a href="../symbols/file.html#constructor">File</a></b>()
 							</div>
 							<div class="description"></div>
 						</td>
@@ -262,6 +260,44 @@ ul.inheritsList
 
 <!-- ============================== methods summary ======================== -->
 			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class File.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">File.<b><a href="../symbols/file.html#.join">join</a></b>(components)
+								</div>
+								<div class="description">Joins the given string arguments together using the operating system's native path
+separator.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">File.<b><a href="../symbols/file.html#.read">read</a></b>(filePath, maxBytes)
+								</div>
+								<div class="description">Reads the given number of bytes (or the entire contents if the argument is ommitted)
+from the specified file</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
 <!-- ============================== events summary ======================== -->
 			
 
@@ -273,7 +309,7 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>LoadError</b>(message)
+						<b>File</b>()
 				</div>
 				
 				<div class="description">
@@ -285,27 +321,9 @@ ul.inheritsList
 				
 				
 					
-						<dl class="detailList">
-						<dt class="heading">Parameters:</dt>
-						
-							<dt>
-								<span class="light fixedFont">{String}</span>  <b>message</b>
-								
-							</dt>
-								<dd>The error message to be given for this exception.</dd>
-						
-						</dl>
 					
 					
 					
-					
-					
-						<dl class="detailList">
-						<dt class="heading">Returns:</dt>
-						
-								<dd><span class="light fixedFont">{<a href="../symbols/Error.html">Error</a>}</span> </dd>
-						
-						</dl>
 					
 					
 					
@@ -318,6 +336,105 @@ ul.inheritsList
 
 <!-- ============================== method details ========================= -->		
 			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name=".join"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{String}</span>
+					<span class="light">File.</span><b>join</b>(components)
+					
+					</div>
+					<div class="description">
+						Joins the given string arguments together using the operating system's native path
+separator.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>components</b>
+									
+								</dt>
+								<dd>Set of strings to join together.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> The resulting path.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".read"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{String}</span>
+					<span class="light">File.</span><b>read</b>(filePath, maxBytes)
+					
+					</div>
+					<div class="description">
+						Reads the given number of bytes (or the entire contents if the argument is ommitted)
+from the specified file
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>filePath</b>
+									
+								</dt>
+								<dd>Path to a file.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{int}</span> <b>maxBytes</b>
+									<i>Optional</i>
+								</dt>
+								<dd>Number of bytes to read from the file. Defaults to entire file.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> The data read from the given file.</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
+			
 			
 <!-- ============================== event details ========================= -->		
 			
@@ -329,7 +446,7 @@ ul.inheritsList
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Oct 08 2009 22:54:39 GMT-0500 (CDT)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Thu Oct 08 2009 23:05:52 GMT-0500 (CDT)
 		</div>
 	</body>
 </html>
