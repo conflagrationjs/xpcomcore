@@ -1,5 +1,7 @@
 require 'pathname'
 require 'yaml'
+require 'jsdoc-toolkit/doc_task'
+
 here = (Pathname(__FILE__).parent.expand_path)
 
 task :test do
@@ -13,10 +15,9 @@ namespace :docs do
   doc_dir = here + "doc"
   jsdoc_loc = here + "etc/jsdoc-toolkit"
   
-  desc "Builds the documentation"
-  task :build do
-    raise "java does not seem to be in your PATH." if `which java`.chomp.empty?
-    system(%Q[java -jar "#{jsdoc_loc}/jsrun.jar" "#{jsdoc_loc}/app/run.js" -r -a -t="#{jsdoc_loc}/templates/jsdoc" -d="#{doc_dir}" lib])
+  JsDocToolkit::DocTask.new(:build) do |doc|
+    doc.jsdoc_dir = 'doc'
+    doc.jsdoc_files = 'lib'
   end
   
   task :clean do
