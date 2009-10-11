@@ -1,0 +1,8 @@
+--- 
+version: 
+  major: 0
+  minor: 4
+  patch: 1
+
+gecko:
+  min_version: 1.9.0

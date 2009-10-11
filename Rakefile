@@ -2,6 +2,8 @@ require 'pathname'
 require 'yaml'
 require 'jsdoc-toolkit/doc_task'
 
+# TODO - fix this rakefile because it sucks sucks sucks
+
 here = (Pathname(__FILE__).parent.expand_path)
 
 task :test do
@@ -45,30 +47,50 @@ task :release => :build do
 end
 
 namespace :version do
-  version_file = here + "VERSION.yml"
+  properties_file = here + "build_properties.yml"
   
-  task :update_files do
-    component_file = (Pathname(__FILE__).parent + "components/XPCOMCore.js").expand_path
-    current = YAML.load_file(version_file.to_s)
-    version_string = "#{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
-    js_marker_comment = "// DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @XPCOMCORE_VERSION@"
-    js_version_string = "var XPCOMCoreVersion = '#{version_string}'; #{js_marker_comment}\n"
-    new_file = component_file.readlines.collect do |line|
-      next line unless line =~ /@XPCOMCORE_VERSION@/
-      js_version_string
+  ghetto_template = lambda do |file, identifier, new_val|
+    js_marker_comment = "// DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @#{identifier}@"
+    
+    new_file = file.readlines.collect do |line|
+      next line unless line =~ /#{Regexp.escape(js_marker_comment)}/
+      "#{new_val} #{js_marker_comment}"
     end
     
-    component_file.open('w') { |f| f << new_file.join }
-    puts "Updated '#{component_file}' to reflect VERSION.yml"
-    system(%Q[cd "#{here}" && git add "#{component_file}" && git commit -m "Updating version to '#{version_string}'" "#{component_file}"])
+    
+    file.open('w') { |f| f << new_file.join }
+    puts "Updated '#{file}' to reflect build_properties.yml"
+    
+    system(%Q[cd "#{here}" && git add "#{file}" && git commit -m "Updating from build_properties.yml" "#{file}"])
   end
+  
+  
+  task :update_component do
+    component_file = (Pathname(__FILE__).parent + "components/XPCOMCore.js").expand_path
+    current = YAML.load_file(properties_file.to_s)
+    version_string = "#{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
+
+    js_version_string = "var XPCOMCoreVersion = '#{version_string}';"
+    ghetto_template.call(component_file, 'XPCOMCORE_VERSION', js_version_string)
+  end
+  
+  task :update_bootstrapper do
+    bootstrapper_file = (Pathname(__FILE__).parent + "bootstrapper.js").expand_path
+    properties = YAML.load_file(properties_file.to_s)
+    gecko_min_version = properties['gecko']['min_version']
+
+    gecko_min_version_string = "const requiredMinGeckoVersion = '#{gecko_min_version}';"
+    ghetto_template.call(bootstrapper_file, 'MIN_GECKO_VERSION', gecko_min_version_string)
+  end
+  
+  task :update_files => [:update_component, :update_bootstrapper]
   
   namespace :bump do
     bumper = lambda do |version_part|
-      current = YAML.load_file(version_file.to_s)
+      current = YAML.load_file(properties_file.to_s)
       puts "Current version is: #{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
       current['version'][version_part] += 1
-      version_file.open('w') { |f| f << YAML.dump(current) }
+      properties_file.open('w') { |f| f << YAML.dump(current) }
       puts "Current version is now: #{current['version']['major']}.#{current['version']['minor']}.#{current['version']['patch']}"
     end
     
