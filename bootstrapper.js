@@ -1,5 +1,4 @@
-const requiredMinGeckoVersion = '1.9.0';
-var EXPORTED_SYMBOLS = ["XPCOMCore", "XPCOMCoreConfig"];
+const requiredMinGeckoVersion = '1.9.0'; // DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @MIN_GECKO_VERSION@var EXPORTED_SYMBOLS = ["XPCOMCore", "XPCOMCoreConfig"];
 
 const $Cc = Components.classes;
 const $Ci = Components.interfaces;
