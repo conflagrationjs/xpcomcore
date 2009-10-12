@@ -1,6 +1,5 @@
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
-var XPCOMCoreVersion = '0.4.1'; // DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @XPCOMCORE_VERSION@
-const $Cc = Components.classes;
+var XPCOMCoreVersion = '0.5.1'; // DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @XPCOMCORE_VERSION@const $Cc = Components.classes;
 const $Ci = Components.interfaces;
 
 var ioService = $Cc["@mozilla.org/network/io-service;1"].getService($Ci.nsIIOService);
