@@ -20,7 +20,7 @@ namespace :docs do
   
   JsDocToolkit::DocTask.new(:build) do |doc|
     doc.jsdoc_dir = 'doc'
-    doc.jsdoc_files = 'lib'
+    doc.jsdoc_files << 'lib'
   end
   
   task :clean do
