@@ -1,4 +1,5 @@
-const requiredMinGeckoVersion = '1.9.0'; // DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @MIN_GECKO_VERSION@const $Cc = Components.classes;
+const requiredMinGeckoVersion = '1.9.0'; // DO NOT REMOVE THIS COMMENT OR MOVE THIS LINE. THIS LINE IS AUTO-GENERATED FROM A RAKE TASK. @MIN_GECKO_VERSION@
+const $Cc = Components.classes;
 const $Ci = Components.interfaces;
 
 var checkGeckoVersion = function() {

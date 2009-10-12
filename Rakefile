@@ -1,6 +1,7 @@
 require 'pathname'
 require 'yaml'
 require 'jsdoc-toolkit/doc_task'
+require 'english'
 
 # TODO - fix this rakefile because it sucks sucks sucks
 
@@ -54,7 +55,7 @@ namespace :version do
     
     new_file = file.readlines.collect do |line|
       next line unless line =~ /#{Regexp.escape(js_marker_comment)}/
-      "#{new_val} #{js_marker_comment}"
+      "#{new_val} #{js_marker_comment}#{$RS}"
     end
     
     
