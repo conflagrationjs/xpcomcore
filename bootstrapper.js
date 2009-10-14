@@ -27,4 +27,5 @@ Components.manager.QueryInterface($Ci.nsIComponentRegistrar).autoRegister(compon
 // Now we're registered, export a reference to the service for the component that's bootstrapping us,
 // since "Javascript global property"/"Javascript global constructor" don't get exported into the
 // BackstagePass environment.
-Components.utils.import("resource://xpcomcore/globals.js");
+const XPCOMCore = $Cc["@conflagrationjs.org/xpcomcore/core-constructor;1"].createInstance();
+const XPCOMCoreConfig = $Cc["@conflagrationjs.org/xpcomcore/core;1"].createInstance();
