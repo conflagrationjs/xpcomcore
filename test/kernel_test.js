@@ -1,95 +1,87 @@
-XULTestCase.create("Kernel Test", function(setup, teardown, test) {
+require("test_helper");
+
+Riot.context("Kernel", function(should, setup) {
+  
   setup(function() {
     $LOAD_PATH.push(File.join($CURRENT_DIRECTORY, "fixtures"));
   });
   
-  test("Kernel() function should mix its properties into the passed in scope", function(){
+  should("mix its properties into the passed in scope when used as a function", function(){
     var newScope = {};
-    this.assertNotEqual(0, Kernel.prototype.__count__);
-    this.assertEqual(0, newScope.__count__);
     Kernel(newScope);
-    this.assertEqual(Kernel.prototype.__count__, newScope.__count__);
-  });
+    return newScope.__count__;
+  }).equals(Kernel.prototype.__count__);
   
-  
-  test("$CURRENT_FILE should be exposed as a getter that returns a value that is not a function", function(){
-    this.assertNotEqual("function", typeof($CURRENT_FILE));
-  });
+  should("expose $CURRENT_FILE as a getter that returns a value that is a string", function(){
+    return $CURRENT_FILE;
+  }).isTypeOf("string");
 
-  test("$CURRENT_FILE should end in kernel_test.js", function(){
-    this.assertMatch(/kernel_test.js$/, $CURRENT_FILE);
-  });
+  should("have $CURRENT_FILE end in kernel_test.js", function(){
+    return $CURRENT_FILE;
+  }).matches(/kernel_test.js$/);
 
+  should("expose $CURRENT_DIRECTORY as a getter that returns a value that is a string", function(){
+    return $CURRENT_DIRECTORY;
+  }).isTypeOf("string");
 
-  test("$CURRENT_DIRECTORY should be exposed as a getter that returns a value that is not a function", function(){
-    this.assertNotEqual("function", typeof($CURRENT_DIRECTORY));
-  });
+  should("have $CURRENT_DIRECTORY end in test", function(){
+    return $CURRENT_DIRECTORY;
+  }).matches(/test$/);
+  
+  should("throw an exception when you give load a non-existent resource", function() {
+    load("some-junk");
+  }).raises("LoadError");
 
-  test("$CURRENT_DIRECTORY should end in test", function(){
-    this.assertMatch(/test$/, $CURRENT_DIRECTORY);
-  });
+  should("return true when load can load a file successfully", function() {
+    return load("love.js");
+  }).equals(true);
   
+  should("bubble up a syntax error if the loaded file is syntactically whack", function() {
+    load("syntax_error.js");
+  }).raises("SyntaxError");
   
-  test("load should throw an exception when you give it a non-existent resource", function() {
-    this.assertRaise("LoadError", function() {
-      load("some-junk");
-    });
-  });
-
-  test("load should return true when it can load a file successfully", function() {
-    this.assertEqual(true, load("love.js"));
-  });
-  
-  test("load should bubble up a syntax error if the loaded file is syntactically whack", function() {
-    this.assertRaise("SyntaxError", function() { load("syntax_error.js") });
-  });
-  
-  test("load should allow loading a resource multiple times", function() {
+  should("allow loading a resource multiple times", function() {
     load("love.js");
-    this.assertEqual(true, love);
-
     love = false;
     load("love.js");
-    this.assertEqual(true, love);
-  });
+    return love;
+  }).equals(true);
   
-  test("load works when using absolute paths", function() {
+  should("allow loading using absolute paths", function() {
     love = false;
-
     var absolutePath = File.join($CURRENT_DIRECTORY, "fixtures", "love.js");
     // FIXME: this is unix-only and janky:
-    this.assertMatch(/^\//, absolutePath);
+    if (!absolutePath.match(/^\//)) { throw("Expected an absolute path."); }
     
     load(absolutePath);
-    this.assertEqual(true, love);
-  });
+    return love;
+  }).equals(true);
   
+  should("have require return true the first time (just like load)", function() {
+    return require("love");
+  }).equals(true);
   
-  test("require should load a file the first time (just like load)", function() {
-    this.assertEqual(true, require("love"));
-  });
-  
-  test("require should return false if the resource has already been loaded", function() {
+  should("have require return false if the resource has already been loaded", function() {
     require("mad_love");
-    this.assertEqual(false, require("mad_love"));
-  });
+    return require("mad_love");
+  }).equals(false);
 
-  test("require should not load a resource that's already been loaded", function() {
+  should("not require a resource that's already been loaded", function() {
     require("mad_world");
-    this.assertEqual(true, mad_world);
+    if (!mad_world) { throw("Expected mad_world to be true"); }
 
     mad_world = false;
     require("mad_world");
-    this.assertEqual(false, mad_world);
-  });
+    return mad_world;
+  }).equals(false);
   
-  test("should expose a $ENV object that allows for getting environment variables", function() {
-    this.assert($ENV.get('HOME'));
-  });
+  should("expose a $ENV object that allows for getting environment variables", function() {
+    return $ENV.get('HOME');
+  }).isTypeOf('string');
   
-  test("should expose a $ENV object that allows for setting environment variables", function() {
+  should("expose a $ENV object that allows for setting environment variables", function() {
     $ENV.set('XPCOMCORETEST', "testing");
-    this.assertEqual($ENV.get('XPCOMCORETEST'), "testing");
-  });
+    return $ENV.get('XPCOMCORETEST');
+  }).equals("testing");
   
 });

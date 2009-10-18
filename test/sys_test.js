@@ -1,19 +1,18 @@
-XULTestCase.create("Sys Test", function(setup, teardown, test) {
+require("test_helper");
 
-  test("Sys.tempDir should return a string path to the OS temporary directory", function(){
-    var tempDir = Sys.tempDir;
-    this.assert(tempDir);
-    this.assert(tempDir.length > 0);
-  });
+Riot.context("Sys", function(should) {
+
+  should("have Sys.tempDir return a string path to the OS temporary directory", function(){
+    var tempDir = XPCBuiltins.nsILocalFile(Sys.tempDir);
+    return tempDir.exists();
+  }).equals(true);
   
-  test("Sys.run should execute the given command and return the exit status in an object", function(){
-    var result = Sys.run("exit", "47");
-    this.assertEqual(47, result.exitStatus);
-  });
+  should("have Sys.run execute the given command and return the exit status in an object", function(){
+    return Sys.run("exit", "47").exitStatus;
+  }).equals(47);
   
-  test("Sys.run should execute the given command and return the output in an object", function(){
-    var result = Sys.run("echo", "foo bar baz");
-    this.assertEqual("foo bar baz\n", result.output);
-  });
+  should("have Sys.run execute the given command and return the output in an object", function(){
+    return Sys.run("echo", "foo bar baz").output;
+  }).equals("foo bar baz\n");
   
 });

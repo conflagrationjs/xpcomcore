@@ -1,8 +1,10 @@
-XULTestCase.create("XPCBuiltins Test", function(setup, teardown, test) {
+require("test_helper");
 
-  test("constructor for nsILocalFile should return an nsILocalFile QI'd object", function() {
+Riot.context("XPCBuiltins", function(should) {
+
+  should("have the constructor for nsILocalFile should return an nsILocalFile QI'd object", function() {
     var localFile = new XPCBuiltins.nsILocalFile("/");
-    this.assertMatch(/nsILocalFile/, localFile.toString());
-  });
+    return localFile.toString();
+  }).matches(/nsILocalFile/);
     
 });
