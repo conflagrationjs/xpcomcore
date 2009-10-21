@@ -7,9 +7,15 @@ require 'english'
 
 here = (Pathname(__FILE__).parent.expand_path)
 
-task :test do
+task :set_bootstrapper_env do
   ENV['XPCOMCORE'] = (Pathname(__FILE__).parent.expand_path + "bootstrapper.js").to_s
-  exec(ENV['XULTEST'] || "xultest", "--", "-testDir", (Pathname(__FILE__).parent + "test/").expand_path.to_s)
+end
+
+gem 'xultestrunner'
+require 'xultestrunner/tasks/test_task'
+XULTestRunner::TestTask.new(:test => :set_bootstrapper_env) do |tt|
+  tt.test_lib = "test"
+  tt.test_dir = "test"
 end
 
 task :default => :test
