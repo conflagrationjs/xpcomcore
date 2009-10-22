@@ -1,6 +1,6 @@
 require("test_helper");
 
-Riot.context("Sys", function(should) {
+Riot.context("Sys", function() {
 
   should("have Sys.tempDir return a string path to the OS temporary directory", function(){
     var tempDir = XPCBuiltins.nsILocalFile(Sys.tempDir);

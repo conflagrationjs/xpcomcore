@@ -5,6 +5,8 @@ if (Gem.isSupported) {
 
   Riot.context("RubyGems", function(should) {
 
+    asserts("This space intentionally left blank.", true);
+
     // should("have Sys.tempDir return a string path to the OS temporary directory", function(){
     //   var tempDir = XPCBuiltins.nsILocalFile(Sys.tempDir);
     //   return tempDir.exists();

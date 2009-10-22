@@ -1,9 +1,11 @@
 require("test_helper");
 
-Riot.context("Kernel", function(should, setup) {
-  
+var kernelTestPaths = { dir: $CURRENT_DIRECTORY, file: $CURRENT_FILE };
+
+Riot.context("Kernel", function() {
+
   setup(function() {
-    $LOAD_PATH.push(File.join($CURRENT_DIRECTORY, "fixtures"));
+    $LOAD_PATH.push(File.join(kernelTestPaths.dir, "fixtures"));
   });
   
   should("mix its properties into the passed in scope when used as a function", function(){
@@ -13,19 +15,19 @@ Riot.context("Kernel", function(should, setup) {
   }).equals(Kernel.prototype.__count__);
   
   should("expose $CURRENT_FILE as a getter that returns a value that is a string", function(){
-    return $CURRENT_FILE;
+    return kernelTestPaths.file;
   }).isTypeOf("string");
 
   should("have $CURRENT_FILE end in kernel_test.js", function(){
-    return $CURRENT_FILE;
+    return kernelTestPaths.file;
   }).matches(/kernel_test.js$/);
 
   should("expose $CURRENT_DIRECTORY as a getter that returns a value that is a string", function(){
-    return $CURRENT_DIRECTORY;
+    return kernelTestPaths.dir;
   }).isTypeOf("string");
 
   should("have $CURRENT_DIRECTORY end in test", function(){
-    return $CURRENT_DIRECTORY;
+    return kernelTestPaths.dir;
   }).matches(/test$/);
   
   should("throw an exception when you give load a non-existent resource", function() {
@@ -49,7 +51,7 @@ Riot.context("Kernel", function(should, setup) {
   
   should("allow loading using absolute paths", function() {
     love = false;
-    var absolutePath = File.join($CURRENT_DIRECTORY, "fixtures", "love.js");
+    var absolutePath = File.join(kernelTestPaths.dir, "fixtures", "love.js");
     // FIXME: this is unix-only and janky:
     if (!absolutePath.match(/^\//)) { throw("Expected an absolute path."); }
     

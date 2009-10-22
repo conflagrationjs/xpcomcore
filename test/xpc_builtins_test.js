@@ -1,6 +1,6 @@
 require("test_helper");
 
-Riot.context("XPCBuiltins", function(should) {
+Riot.context("XPCBuiltins", function() {
 
   should("have the constructor for nsILocalFile should return an nsILocalFile QI'd object", function() {
     var localFile = new XPCBuiltins.nsILocalFile("/");

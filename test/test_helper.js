@@ -1,5 +1,5 @@
 require("stdlib/rubygems");
-gem("riot-js");
+gem("riotjs");
 require("riot");
 
 XULTestRunner.atExit = function() {
