@@ -1,5 +1,5 @@
 require("stdlib/rubygems");
-gem("riotjs");
+gem("riotjs-xpcc");
 require("riot");
 
 XULTestRunner.atExit = function() {
